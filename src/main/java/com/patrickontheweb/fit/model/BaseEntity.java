@@ -12,7 +12,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -25,13 +27,9 @@ public abstract class BaseEntity {
 
 	private Long id;
 
-	@JsonIgnore
 	private User createdBy;
-	@JsonIgnore
 	private Date createdDate;
-	@JsonIgnore
 	private User modifiedBy;
-	@JsonIgnore
 	private Date modifiedDate;
 
 	@Id
@@ -45,6 +43,8 @@ public abstract class BaseEntity {
 		this.id = id;
 	}
 
+	@CreatedBy
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
 	@JoinColumn(name = "CREATED_BY")
 	public User getCreatedBy() {
@@ -55,6 +55,7 @@ public abstract class BaseEntity {
 		this.createdBy = createdBy;
 	}
 
+	@JsonIgnore
 	@CreatedDate
 	@Column(name = "CREATED_DATE")
 	public Date getCreatedDate() {
@@ -65,6 +66,8 @@ public abstract class BaseEntity {
 		this.createdDate = createdDate;
 	}
 
+	@LastModifiedBy
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY, targetEntity = User.class)
 	@JoinColumn(name = "MODIFIED_BY")
 	public User getModifiedBy() {
@@ -76,6 +79,7 @@ public abstract class BaseEntity {
 	}
 
 	@LastModifiedDate
+	@JsonIgnore
 	@Column(name = "MODIFIED_DATE")
 	public Date getModifiedDate() {
 		return modifiedDate;

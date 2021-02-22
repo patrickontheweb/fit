@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,17 +31,13 @@ public class AppController {
 	}
 	
 	@GetMapping("/user")
-	public String fetchUsers() {
+	public ResponseEntity<List<User>> fetchUsers() {
 		List<User> users = userService.fetchAll();
-		return users.toString();
+		return ResponseEntity.ok(users);
 	}
 	
 	@PostMapping("/user")
 	public ResponseEntity<User> createUser(@RequestBody User newUser) {
-		// Temporarily set the created by to a known user
-		// Update when login is implemented
-		User systemUser = userService.get(6L).get();
-		newUser.setCreatedBy(systemUser);
 		User user = userService.saveUser(newUser);
 		return ResponseEntity.ok(user);
 	}
@@ -61,5 +58,11 @@ public class AppController {
 		user = userService.saveUser(user);
 		return ResponseEntity.ok(user);
 	}
-
+	
+	@DeleteMapping("/user/{id}") 
+	public ResponseEntity<User> deleteUser(@PathVariable("id") Long id) {
+		User user = userService.get(id).get();
+		userService.deleteUser(user);
+		return ResponseEntity.ok(user);
+	}
 }
