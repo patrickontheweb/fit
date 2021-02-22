@@ -1,5 +1,14 @@
+# Logging
 logging.level.root=INFO
 
+# DB Connection
 spring.datasource.url=jdbc:mysql://URL:3306/fit
 spring.datasource.username=USERNAME
 spring.datasource.password=PASSWORD
+
+# Hibernate
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
+spring.jpa.show-sql=false
+
+# Security
+spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.security.SecurityAutoConfiguration
