@@ -4,6 +4,7 @@ import java.util.NoSuchElementException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,13 +19,19 @@ public class AppResponseExceptionHandler {
 	@ExceptionHandler(value = { NoSuchElementException.class })
 	public ResponseEntity<Object> handleNoSuchElementException(RuntimeException exception, WebRequest request) {
 		logException(exception, request);
-		return new ResponseEntity<Object>(HttpStatus.NOT_FOUND);		
+		return ResponseEntity.notFound().build();	
+	}
+	
+	@ExceptionHandler(value = { DataIntegrityViolationException.class })
+	public ResponseEntity<Object> handleDataIntegrityException(RuntimeException exception, WebRequest request) {
+		logException(exception, request);
+		return ResponseEntity.badRequest().build();	
 	}
 	
 	@ExceptionHandler(value = { Exception.class })
-	public ResponseEntity<Object> handleException(RuntimeException exception, WebRequest request) {
+	public ResponseEntity<Object> handleGeneralException(RuntimeException exception, WebRequest request) {
 		logException(exception, request);
-		return new ResponseEntity<Object>(HttpStatus.INTERNAL_SERVER_ERROR);		
+		return new ResponseEntity<Object>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	private void logException(RuntimeException exception, WebRequest request) {
