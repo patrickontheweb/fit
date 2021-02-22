@@ -11,6 +11,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.patrickontheweb.fit.model.BaseEntity;
@@ -85,5 +88,33 @@ public class User extends BaseEntity {
 	
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+	
+	@Override
+	public boolean equals(Object object) {
+		boolean equals = false;
+		
+		if(object instanceof User) {
+			User other = User.class.cast(object);
+
+			equals = new EqualsBuilder()
+					.append(this.getUsername(), other.getUsername())
+					.append(this.getEmail(), other.getEmail())
+					.append(this.getFirstName(), other.getFirstName())
+					.append(this.getLastName(), other.getLastName())
+					.isEquals();
+		}
+				
+		return equals;
+	}
+	
+	@Override
+	public int hashCode() {
+		return new HashCodeBuilder()
+				.append(getUsername())
+				.append(getEmail())
+				.append(getFirstName())
+				.append(getLastName())
+				.toHashCode();
 	}
 }
