@@ -1,2 +1,2 @@
-# Fit
-Project to track daily weight, sleep, fitness, etc.
+# Fit API
+Web service to track daily weight, sleep, fitness, etc.
