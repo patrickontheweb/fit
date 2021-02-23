@@ -1,3 +1,6 @@
+# Application
+server.servlet.context-path=/fit
+
 # Logging
 logging.level.root=INFO
 
