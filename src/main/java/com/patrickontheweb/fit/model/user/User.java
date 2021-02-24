@@ -10,6 +10,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -22,11 +24,19 @@ import com.patrickontheweb.fit.model.BaseEntity;
 @Table(name = "USER")
 public class User extends BaseEntity {
 
+	@NotBlank(message = "Username is required")
 	private String username;
+	
 	@JsonProperty(access = Access.WRITE_ONLY)
+	@NotBlank(message = "Password is required")
 	private String password;
+	
 	private String firstName;
+
 	private String lastName;
+	
+	@NotBlank(message = "E-mail is required")
+	@Pattern(regexp=".+@.+\\..+", message="E-mail must be in the format user@domain.extension")
 	private String email;
 	
 	private Set<Role> roles;
